@@ -5,5 +5,6 @@ public class GameManager {
 
     public GameManager() {
         gameBoard = new GameBoard();
+
     }
 }

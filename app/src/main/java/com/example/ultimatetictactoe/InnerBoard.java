@@ -17,4 +17,16 @@ public class InnerBoard {
             }
         }
     }
+
+    public boolean isWon(char checking) {
+        if (miniBoard[0][0] == checking && miniBoard[1][1] == checking && miniBoard[2][2] == checking) return true;
+        if (miniBoard[0][0] == checking && miniBoard[1][0] == checking && miniBoard[2][0] == checking) return true;
+        if (miniBoard[0][0] == checking && miniBoard[0][1] == checking && miniBoard[0][2] == checking) return true;
+        if (miniBoard[1][0] == checking && miniBoard[1][1] == checking && miniBoard[1][2] == checking) return true;
+        if (miniBoard[2][0] == checking && miniBoard[2][1] == checking && miniBoard[2][2] == checking) return true;
+        if (miniBoard[0][1] == checking && miniBoard[1][1] == checking && miniBoard[1][2] == checking) return true;
+        if (miniBoard[0][2] == checking && miniBoard[1][2] == checking && miniBoard[2][2] == checking) return true;
+        if (miniBoard[2][0] == checking && miniBoard[1][1] == checking && miniBoard[0][2] == checking) return true;
+        return false;
+    }
 }

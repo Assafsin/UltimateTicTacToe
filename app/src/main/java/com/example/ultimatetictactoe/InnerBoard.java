@@ -29,4 +29,14 @@ public class InnerBoard {
         if (miniBoard[2][0] == checking && miniBoard[1][1] == checking && miniBoard[0][2] == checking) return true;
         return false;
     }
+
+    public boolean isFull () {
+        for (char[] charArray:miniBoard) {
+            for (char symbol:charArray) {
+                if (symbol == '_') return false;
+            }
+        }
+        return true;
+    }
+
 }

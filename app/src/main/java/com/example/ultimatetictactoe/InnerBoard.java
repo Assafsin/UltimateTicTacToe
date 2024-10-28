@@ -3,22 +3,23 @@ package com.example.ultimatetictactoe;
 public class InnerBoard {
     // for every given little square in the game board (in the back-end code) - 'O' is resembled as 'O', 'X' is resembled as 'X' and '{not yet "captured"}' is resembled as '_'
 
-    private char[][] miniBoard;
+    private Piece[][] miniBoard;
 
     public InnerBoard() {
-        miniBoard = new char[3][3];
+        miniBoard = new Piece[3][3];
         initialize();
     }
 
     private void initialize () {
-        for (char[] charArray:miniBoard) {
-            for (char symbol:charArray) {
-                symbol = '_';
+        for (Piece[] charArray:miniBoard) {
+            for (Piece symbol:charArray) {
+                symbol = Piece.EMPTY;
             }
         }
     }
 
-    public boolean isWon(char checking) {
+    public boolean isWon(char symbol) {
+        Piece checking = Piece.charToPiece(symbol);
         if (miniBoard[0][0] == checking && miniBoard[1][1] == checking && miniBoard[2][2] == checking) return true;
         if (miniBoard[0][0] == checking && miniBoard[1][0] == checking && miniBoard[2][0] == checking) return true;
         if (miniBoard[0][0] == checking && miniBoard[0][1] == checking && miniBoard[0][2] == checking) return true;
@@ -31,9 +32,9 @@ public class InnerBoard {
     }
 
     public boolean isFull () {
-        for (char[] charArray:miniBoard) {
-            for (char symbol:charArray) {
-                if (symbol == '_') return false;
+        for (Piece[] charArray:miniBoard) {
+            for (Piece symbol:charArray) {
+                if (symbol == Piece.EMPTY) return false;
             }
         }
         return true;

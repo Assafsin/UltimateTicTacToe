@@ -18,4 +18,5 @@ public enum Piece {
         if(symbol == 'O') return O;
         return EMPTY;
     }
+
 }

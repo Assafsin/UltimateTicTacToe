@@ -16,6 +16,15 @@ public class GameBoard {
         }
     }
 
+    public void resetBoard() {
+        for(InnerBoard[] innerArray : mainBoard) {
+            for (InnerBoard board : innerArray) {
+                board.resetInnerBoard();
+            }
+        }
+    }
+
+    //checks if a given player has won overall in the match
     public boolean playerWon(char checking) {
         if (mainBoard[0][0].isWon(checking) && mainBoard[1][1].isWon(checking) && mainBoard[2][2].isWon(checking)) return true;
         if (mainBoard[0][0].isWon(checking) && mainBoard[1][0].isWon(checking) && mainBoard[2][0].isWon(checking)) return true;

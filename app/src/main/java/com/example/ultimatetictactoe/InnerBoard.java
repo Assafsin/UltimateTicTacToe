@@ -1,7 +1,6 @@
 package com.example.ultimatetictactoe;
 
 public class InnerBoard {
-    // for every given little square in the game board (in the back-end code) - 'O' is resembled as 'O', 'X' is resembled as 'X' and '{not yet "captured"}' is resembled as '_'
 
     private Piece[][] miniBoard;
 
@@ -9,6 +8,7 @@ public class InnerBoard {
         miniBoard = new Piece[3][3];
         initialize();
     }
+
 
     private void initialize () {
         for (Piece[] charArray:miniBoard) {
@@ -18,6 +18,11 @@ public class InnerBoard {
         }
     }
 
+    public void resetInnerBoard() {
+        initialize();
+    }
+
+    // checks if the given player (symbol- 'X' or 'O') has won in the innerBoard
     public boolean isWon(char symbol) {
         Piece checking = Piece.charToPiece(symbol);
         if (miniBoard[0][0] == checking && miniBoard[1][1] == checking && miniBoard[2][2] == checking) return true;

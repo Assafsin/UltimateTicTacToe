@@ -13,7 +13,7 @@ public class GameManager {
     }
 
     private char endGame() {
-        if (gameBoard.playerWon('x')) return 'x';
+        if (gameBoard.playerWon('X')) return 'x';
         if (gameBoard.playerWon('O')) return 'o';
         return '_';
     }

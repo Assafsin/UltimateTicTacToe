@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         gManager = new GameManager();
-
-
     }
 
     @Override

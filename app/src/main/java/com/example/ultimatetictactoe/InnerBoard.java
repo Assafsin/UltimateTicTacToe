@@ -9,7 +9,6 @@ public class InnerBoard {
         initialize();
     }
 
-
     private void initialize () {
         for (Piece[] charArray:miniBoard) {
             for (Piece symbol:charArray) {
@@ -44,5 +43,4 @@ public class InnerBoard {
         }
         return true;
     }
-
 }

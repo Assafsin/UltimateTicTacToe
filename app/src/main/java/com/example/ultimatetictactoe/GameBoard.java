@@ -24,6 +24,14 @@ public class GameBoard {
         }
     }
 
+    public Piece getPiece (int miniBoardI, int miniBoardJ, int innerI, int innerJ) {
+        return mainBoard[miniBoardI][miniBoardJ].getPiece(innerI, innerJ);
+    }
+
+    public void placePiece (int miniBoardI, int miniBoardJ, int innerI, int innerJ, Piece player) {
+        mainBoard[miniBoardI][miniBoardJ].placePiece(innerI, innerJ, player);
+    }
+
     //checks if a given player has won overall in the match
     public boolean playerWon(char checking) {
         if (mainBoard[0][0].isWon(checking) && mainBoard[1][1].isWon(checking) && mainBoard[2][2].isWon(checking)) return true;

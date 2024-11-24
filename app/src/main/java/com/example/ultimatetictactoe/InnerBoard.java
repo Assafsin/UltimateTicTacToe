@@ -21,6 +21,14 @@ public class InnerBoard {
         initialize();
     }
 
+    public void placePiece(int i, int j, Piece player) {
+        miniBoard[i][j] = player;
+    }
+
+    public Piece getPiece(int i, int j) {
+        return miniBoard[i][j];
+    }
+
     // checks if the given player (symbol- 'X' or 'O') has won in the innerBoard
     public boolean isWon(char symbol) {
         Piece checking = Piece.charToPiece(symbol);

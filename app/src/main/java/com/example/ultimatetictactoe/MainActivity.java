@@ -1,5 +1,6 @@
 package com.example.ultimatetictactoe;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -56,22 +57,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        int i = 0;
-        int j = 0;
+        int column = 0;
+        int row = 0;
         for (ImageButton[] buttonsArray:gameButtons) {
             for (ImageButton iButton : buttonsArray) {
                 if (view.getId() == iButton.getId()) {
-                    gManager.turn(i, j);
+                    gManager.turn(column, row);
 
 
                 }
-                i++;
+                column++;
             }
-            j++;
+            row++;
         }
-        for (ImageView[] imgArray : gameBoard) {
-            for (ImageView img : imgArray)  {
+        Drawable icon;
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard[0].length; j++) {
+                if (gManager.getPiece(i, j) == Piece.X) {
+                    icon = getResources().getDrawable(R.drawable.background, getTheme());
+                    gameBoard[i][j].setImageDrawable(icon);
+                }
 
+                else if(gManager.getPiece(i, j) == Piece.O) {
+                    icon = getResources().getDrawable(R.drawable.background2, getTheme());
+                } else if (gManager.getPiece(i, j) == Piece.EMPTY) {
+                    icon = getResources().getDrawable(R.drawable.whitebox, getTheme());
+                }
             }
         }
 

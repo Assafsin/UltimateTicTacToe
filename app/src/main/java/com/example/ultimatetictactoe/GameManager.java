@@ -25,8 +25,9 @@ public class GameManager {
         currInnerGrid = i + (j * 10);
     }
 
+
     public Piece getPiece(int i, int j) {
-       return gameBoard.getPiece(i, j, i, j);
+       return gameBoard.getPiece(i / 3, j / 3, i % 3, j % 3);
     }
 
     private char endGame() {

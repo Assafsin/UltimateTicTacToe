@@ -29,6 +29,7 @@ public class InnerBoard {
         return miniBoard[i][j];
     }
 
+
     // checks if the given player (symbol- 'X' or 'O') has won in the innerBoard
     public boolean isWon(char symbol) {
         Piece checking = Piece.charToPiece(symbol);

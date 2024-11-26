@@ -3,6 +3,7 @@ package com.example.ultimatetictactoe;
 public class GameBoard {
     private InnerBoard[][] mainBoard;
 
+
     public GameBoard() {
         mainBoard = new InnerBoard[3][3];
         initialize();

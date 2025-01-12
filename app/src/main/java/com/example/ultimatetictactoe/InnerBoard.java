@@ -13,6 +13,7 @@ public class InnerBoard {
         for (Piece[] charArray:miniBoard) {
             for (Piece symbol:charArray) {
                 symbol = Piece.EMPTY;
+
             }
         }
     }

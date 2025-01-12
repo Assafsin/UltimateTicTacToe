@@ -27,6 +27,7 @@ public class GameBoard {
 
     public void placePiece (int miniBoardI, int miniBoardJ, int innerI, int innerJ, Piece player) {
         mainBoard[miniBoardI][miniBoardJ].placePiece(innerI, innerJ, player);
+
     }
 
     //checks if a given player has won overall in the match

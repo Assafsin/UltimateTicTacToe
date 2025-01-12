@@ -11,6 +11,7 @@ public class GameManager {
         gameBoard = new GameBoard();
         currTurn = Piece.X;
         canChoose = true;
+
     }
 
     public void turn (int i, int j) {

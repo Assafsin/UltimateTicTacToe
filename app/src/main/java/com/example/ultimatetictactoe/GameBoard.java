@@ -6,13 +6,9 @@ public class GameBoard {
 
     public GameBoard() {
         mainBoard = new InnerBoard[3][3];
-        initialize();
-    }
-
-    private void initialize() {
-        for (InnerBoard[] board: mainBoard) {
-            for (InnerBoard miniBoard: board) {
-                miniBoard = new InnerBoard();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                mainBoard[i][j] = new InnerBoard();
             }
         }
     }

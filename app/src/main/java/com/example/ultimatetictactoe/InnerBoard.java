@@ -31,17 +31,16 @@ public class InnerBoard {
     }
 
 
-    // checks if the given player (symbol- 'X' or 'O') has won in the innerBoard
-    public boolean isWon(char symbol) {
-        Piece checking = Piece.charToPiece(symbol);
-        if (miniBoard[0][0] == checking && miniBoard[1][1] == checking && miniBoard[2][2] == checking) return true;
-        if (miniBoard[0][0] == checking && miniBoard[1][0] == checking && miniBoard[2][0] == checking) return true;
-        if (miniBoard[0][0] == checking && miniBoard[0][1] == checking && miniBoard[0][2] == checking) return true;
-        if (miniBoard[1][0] == checking && miniBoard[1][1] == checking && miniBoard[1][2] == checking) return true;
-        if (miniBoard[2][0] == checking && miniBoard[2][1] == checking && miniBoard[2][2] == checking) return true;
-        if (miniBoard[0][1] == checking && miniBoard[1][1] == checking && miniBoard[1][2] == checking) return true;
-        if (miniBoard[0][2] == checking && miniBoard[1][2] == checking && miniBoard[2][2] == checking) return true;
-        if (miniBoard[2][0] == checking && miniBoard[1][1] == checking && miniBoard[0][2] == checking) return true;
+    // checks if the given player (symbol- 'X' or 'O') has won the innerBoard
+    public boolean isWon(Piece player) {
+        if (miniBoard[0][0] == player && miniBoard[1][1] == player && miniBoard[2][2] == player) return true;
+        if (miniBoard[0][0] == player && miniBoard[1][0] == player && miniBoard[2][0] == player) return true;
+        if (miniBoard[0][0] == player && miniBoard[0][1] == player && miniBoard[0][2] == player) return true;
+        if (miniBoard[1][0] == player && miniBoard[1][1] == player && miniBoard[1][2] == player) return true;
+        if (miniBoard[2][0] == player && miniBoard[2][1] == player && miniBoard[2][2] == player) return true;
+        if (miniBoard[0][1] == player && miniBoard[1][1] == player && miniBoard[1][2] == player) return true;
+        if (miniBoard[0][2] == player && miniBoard[1][2] == player && miniBoard[2][2] == player) return true;
+        if (miniBoard[2][0] == player && miniBoard[1][1] == player && miniBoard[0][2] == player) return true;
         return false;
     }
 

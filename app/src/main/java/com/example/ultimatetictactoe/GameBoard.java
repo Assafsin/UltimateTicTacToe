@@ -4,6 +4,7 @@ public class GameBoard {
     private InnerBoard[][] mainBoard;
 
 
+
     public GameBoard() {
         mainBoard = new InnerBoard[3][3];
         for (int i = 0; i < 3; i++) {
@@ -31,15 +32,22 @@ public class GameBoard {
     }
 
     //checks if a given player has won overall in the match
-    public boolean playerWon(char checking) {
-        if (mainBoard[0][0].isWon(checking) && mainBoard[1][1].isWon(checking) && mainBoard[2][2].isWon(checking)) return true;
-        if (mainBoard[0][0].isWon(checking) && mainBoard[1][0].isWon(checking) && mainBoard[2][0].isWon(checking)) return true;
-        if (mainBoard[0][0].isWon(checking) && mainBoard[0][1].isWon(checking) && mainBoard[0][2].isWon(checking)) return true;
-        if (mainBoard[1][0].isWon(checking) && mainBoard[1][1].isWon(checking) && mainBoard[1][2].isWon(checking)) return true;
-        if (mainBoard[2][0].isWon(checking) && mainBoard[2][1].isWon(checking) && mainBoard[2][2].isWon(checking)) return true;
-        if (mainBoard[0][1].isWon(checking) && mainBoard[1][1].isWon(checking) && mainBoard[1][2].isWon(checking)) return true;
-        if (mainBoard[0][2].isWon(checking) && mainBoard[1][2].isWon(checking) && mainBoard[2][2].isWon(checking)) return true;
-        if (mainBoard[2][0].isWon(checking) && mainBoard[1][1].isWon(checking) && mainBoard[0][2].isWon(checking)) return true;
+    public boolean playerWon(Piece player) {
+        if (mainBoard[0][0].isWon(player) && mainBoard[1][1].isWon(player) && mainBoard[2][2].isWon(player)) return true;
+        if (mainBoard[0][0].isWon(player) && mainBoard[1][0].isWon(player) && mainBoard[2][0].isWon(player)) return true;
+        if (mainBoard[0][0].isWon(player) && mainBoard[0][1].isWon(player) && mainBoard[0][2].isWon(player)) return true;
+        if (mainBoard[1][0].isWon(player) && mainBoard[1][1].isWon(player) && mainBoard[1][2].isWon(player)) return true;
+        if (mainBoard[2][0].isWon(player) && mainBoard[2][1].isWon(player) && mainBoard[2][2].isWon(player)) return true;
+        if (mainBoard[0][1].isWon(player) && mainBoard[1][1].isWon(player) && mainBoard[1][2].isWon(player)) return true;
+        if (mainBoard[0][2].isWon(player) && mainBoard[1][2].isWon(player) && mainBoard[2][2].isWon(player)) return true;
+        if (mainBoard[2][0].isWon(player) && mainBoard[1][1].isWon(player) && mainBoard[0][2].isWon(player)) return true;
         return false;
     }
+
+    public boolean isWon (int miniBoardI, int miniBoardJ, Piece player) {
+        if (mainBoard[miniBoardI][miniBoardJ].isWon(player)) return true;
+        return false;
+    }
+
+
 }

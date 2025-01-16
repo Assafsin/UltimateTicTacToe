@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for (ImageButton iButton : buttonsArray) {
                 if (view.getId() == iButton.getId()) {
                     gManager.turn(column, row);
+                    // TODO: add won innerGrid animation
+ //                   if (gManager.getIsWon())
                 }
                 row++;
             }

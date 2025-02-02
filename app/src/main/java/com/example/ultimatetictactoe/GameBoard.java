@@ -38,10 +38,14 @@ public class GameBoard {
         if (mainBoard[0][0].isWon(player) && mainBoard[0][1].isWon(player) && mainBoard[0][2].isWon(player)) return true;
         if (mainBoard[1][0].isWon(player) && mainBoard[1][1].isWon(player) && mainBoard[1][2].isWon(player)) return true;
         if (mainBoard[2][0].isWon(player) && mainBoard[2][1].isWon(player) && mainBoard[2][2].isWon(player)) return true;
-        if (mainBoard[0][1].isWon(player) && mainBoard[1][1].isWon(player) && mainBoard[1][2].isWon(player)) return true;
+        if (mainBoard[0][1].isWon(player) && mainBoard[1][1].isWon(player) && mainBoard[2][1].isWon(player)) return true;
         if (mainBoard[0][2].isWon(player) && mainBoard[1][2].isWon(player) && mainBoard[2][2].isWon(player)) return true;
         if (mainBoard[2][0].isWon(player) && mainBoard[1][1].isWon(player) && mainBoard[0][2].isWon(player)) return true;
         return false;
+    }
+
+    public void wonInnerBoard(int miniBoardI, int miniBoardJ, Piece player) {
+        mainBoard[miniBoardI][miniBoardJ].wonBoard(player);
     }
 
     public boolean isWon (int miniBoardI, int miniBoardJ, Piece player) {

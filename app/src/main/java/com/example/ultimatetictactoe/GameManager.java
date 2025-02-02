@@ -7,11 +7,13 @@ public class GameManager {
     private int currInnerGridJ;
     private boolean canChoose;
     private boolean[][] isWon;
+    private boolean gameEnded;
 
     public GameManager() {
         gameBoard = new GameBoard();
         currTurn = Piece.X;
         canChoose = true;
+        gameEnded = false;
         isWon = new boolean[3][3];
         for (int i = 0; i < isWon.length; i++) {
             for (int j = 0; j < isWon[0].length; j++) {
@@ -20,35 +22,43 @@ public class GameManager {
         }
     }
 
-    public void turn (int i, int j) {
-        if (isWon[currInnerGridI][currInnerGridJ]) canChoose = true;
-        if (!canChoose) {
-            if(currTurn == Piece.X) currTurn = Piece.O;
-            else if (currTurn == Piece.O) currTurn = Piece.X;
-            gameBoard.placePiece(currInnerGridI, currInnerGridJ, i, j, currTurn);
-            if (gameBoard.isWon(currInnerGridI,currInnerGridJ, currTurn)) isWon[currInnerGridI][currInnerGridJ] = true;
-        }
-        else {
+    public void turn(int i, int j) {
+        if (!canChoose && !isWon[currInnerGridI][currInnerGridJ]) {
+            if (gameBoard.getPiece(currInnerGridI, currInnerGridJ, i, j).equals(Piece.EMPTY)) {
+                gameBoard.placePiece(currInnerGridI, currInnerGridJ, i, j, currTurn);
+                if (gameBoard.isWon(currInnerGridI, currInnerGridJ, currTurn)) {
+                    gameBoard.wonInnerBoard(currInnerGridI, currInnerGridJ, currTurn);
+                    isWon[currInnerGridI][currInnerGridJ] = true;
+                    if(isWon[i][j]) canChoose= true;
+                    //check if the match was won and if it was, stops the match and gives a messages that tells who won
+                    matchWon(currTurn);
+                }
+                if (currTurn == Piece.X) currTurn = Piece.O;
+                else if (currTurn == Piece.O) currTurn = Piece.X;
+            }
+            else {
+                return;
+            }
+        } else {
             canChoose = false;
         }
         currInnerGridI = i;
         currInnerGridJ = j;
     }
 
-    public boolean getIsWon () {
-        return isWon[currInnerGridI][currInnerGridJ];
+    private void matchWon(Piece player) {
+        if (gameBoard.playerWon(player)) {
+            System.out.println("player " + player + " won, congratulations");
+            gameEnded = true;
+        }
     }
 
-    public int getCurrInnerGridI () {
-        return currInnerGridI;
-    }
-
-    public int getCurrInnerGridJ () {
-        return currInnerGridJ;
+    public boolean getGameEnded() {
+        return gameEnded;
     }
 
     public Piece getPiece(int i, int j) {
-       return gameBoard.getPiece(i / 3,j / 3,i % 3,j % 3);
+        return gameBoard.getPiece(i / 3, j / 3, i % 3, j % 3);
     }
 
     private Piece endGame() {

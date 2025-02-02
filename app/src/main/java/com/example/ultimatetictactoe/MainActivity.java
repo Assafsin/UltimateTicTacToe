@@ -13,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     GameManager gManager;
 
@@ -58,33 +58,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        int column = 0;
-        int row = 0;
-        for (ImageButton[] buttonsArray : gameButtons) {
-            for (ImageButton iButton : buttonsArray) {
-                if (view.getId() == iButton.getId()) {
-                    gManager.turn(column, row);
-                    // TODO: add won innerGrid animation
- //                   if (gManager.getIsWon())
+        if (!gManager.getGameEnded()) {
+            int column = 0;
+            int row = 0;
+            for (ImageButton[] buttonsArray : gameButtons) {
+                for (ImageButton iButton : buttonsArray) {
+                    if (view.getId() == iButton.getId()) {
+                        gManager.turn(column, row);
+                        // TODO: add won innerGrid animation
+                        //                   if (gManager.getIsWon())
+                    }
+                    row++;
                 }
-                row++;
+                row = 0;
+                column++;
             }
-            row = 0;
-            column++;
-        }
-        Drawable icon;
-        for (int i = 0; i < gameBoard.length; i++) {
-            for (int j = 0; j < gameBoard[0].length; j++) {
-                if (gManager.getPiece(i, j) == Piece.X) {
-                    icon = getResources().getDrawable(R.drawable.x, getTheme());
-                    gameBoard[i][j].setImageDrawable(icon);
-                }
-                else if(gManager.getPiece(i, j) == Piece.O) {
-                    icon = getResources().getDrawable(R.drawable.o, getTheme());
-                    gameBoard[i][j].setImageDrawable(icon);
-                } else if (gManager.getPiece(i, j) == Piece.EMPTY) {
-                    icon = getResources().getDrawable(R.drawable.whitebox, getTheme());
-                    gameBoard[i][j].setImageDrawable(icon);
+            Drawable icon;
+            for (int i = 0; i < gameBoard.length; i++) {
+                for (int j = 0; j < gameBoard[0].length; j++) {
+                    if (gManager.getPiece(i, j) == Piece.X) {
+                        icon = getResources().getDrawable(R.drawable.x, getTheme());
+                        gameBoard[i][j].setImageDrawable(icon);
+                    } else if (gManager.getPiece(i, j) == Piece.O) {
+                        icon = getResources().getDrawable(R.drawable.o, getTheme());
+                        gameBoard[i][j].setImageDrawable(icon);
+                    } else if (gManager.getPiece(i, j) == Piece.EMPTY) {
+                        icon = getResources().getDrawable(R.drawable.frm, getTheme());
+                        gameBoard[i][j].setImageDrawable(icon);
+                    }
                 }
             }
         }

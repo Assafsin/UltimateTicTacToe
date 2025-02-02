@@ -10,10 +10,9 @@ public class InnerBoard {
     }
 
     private void initialize () {
-        for (Piece[] charArray:miniBoard) {
-            for (Piece symbol:charArray) {
-                symbol = Piece.EMPTY;
-
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                miniBoard[i][j] = Piece.EMPTY;
             }
         }
     }
@@ -38,10 +37,17 @@ public class InnerBoard {
         if (miniBoard[0][0] == player && miniBoard[0][1] == player && miniBoard[0][2] == player) return true;
         if (miniBoard[1][0] == player && miniBoard[1][1] == player && miniBoard[1][2] == player) return true;
         if (miniBoard[2][0] == player && miniBoard[2][1] == player && miniBoard[2][2] == player) return true;
-        if (miniBoard[0][1] == player && miniBoard[1][1] == player && miniBoard[1][2] == player) return true;
+        if (miniBoard[0][1] == player && miniBoard[1][1] == player && miniBoard[2][1] == player) return true;
         if (miniBoard[0][2] == player && miniBoard[1][2] == player && miniBoard[2][2] == player) return true;
         if (miniBoard[2][0] == player && miniBoard[1][1] == player && miniBoard[0][2] == player) return true;
         return false;
+    }
+
+    public void wonBoard(Piece player) {
+        for (Piece[] board : miniBoard) {
+            for (Piece piece : board)
+                piece = player;
+        }
     }
 
     public boolean isFull () {

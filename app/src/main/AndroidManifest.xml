@@ -13,6 +13,9 @@
         android:theme="@style/Theme.UltimateTicTacToe"
         tools:targetApi="31">
         <activity
+            android:name=".LeaderBoard"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

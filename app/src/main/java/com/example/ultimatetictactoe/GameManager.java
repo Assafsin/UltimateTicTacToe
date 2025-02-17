@@ -53,6 +53,7 @@ public class GameManager {
         }
     }
 
+
     public boolean getGameEnded() {
         return gameEnded;
     }

@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ImageView[][] gameBoard;
     private ImageButton[][] gameButtons;
-
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gameButtons = new ImageButton[3][3];
         gameBoard = new ImageView[9][9];
         gManager = new GameManager();
+        dbHelper = new DatabaseHelper();
 
         String str;
         int resID;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 row = 0;
                 column++;
             }
+
             Drawable icon;
             for (int i = 0; i < gameBoard.length; i++) {
                 for (int j = 0; j < gameBoard[0].length; j++) {

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffdbbb"
+    android:layoutDirection="ltr"
+    android:orientation="vertical"
+    tools:context=".LeaderBoard">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="117dp"
+            android:layout_height="79dp"
+            app:srcCompat="@android:drawable/ic_menu_revert" />
+
+        <TextView
+            android:layout_width="244dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="50dp"
+            android:layout_weight="0"
+            android:fontFamily="casual"
+            android:gravity="center_horizontal"
+            android:text=" Leader Board"
+            android:textSize="30sp"
+            android:textStyle="normal|bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_weight="0"
+            android:fontFamily="casual"
+            android:gravity="center_horizontal"
+            android:text="  Name        Score"
+            android:textColor="#aa5533"
+            android:textSize="20sp"
+            android:textStyle="normal|bold" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lvStati"
+        android:layout_width="362dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:background="#fff0ff"
+        android:baselineAligned="false" />
+
+</LinearLayout>

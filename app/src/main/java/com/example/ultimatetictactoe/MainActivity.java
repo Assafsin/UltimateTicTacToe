@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ImageView[][] gameBoard;
     private ImageButton[][] gameButtons;
-    private DatabaseHelper dbHelper;
 
 
     @Override
@@ -36,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gameButtons = new ImageButton[3][3];
         gameBoard = new ImageView[9][9];
         gManager = new GameManager();
-        dbHelper = new DatabaseHelper();
 
         String str;
         int resID;

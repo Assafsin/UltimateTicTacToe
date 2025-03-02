@@ -2,6 +2,7 @@ package com.example.ultimatetictactoe;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -11,7 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class LeaderBoard extends AppCompatActivity {
+public class LeaderBoard extends AppCompatActivity implements View.OnClickListener {
 
     // list view of scores
     private ListView lv;
@@ -34,10 +35,10 @@ public class LeaderBoard extends AppCompatActivity {
         btnBack = (ImageView)findViewById(R.id.btnBack);
         btnBack.setOnClickListener(this);
         Resources res =getResources();
-        CustomAdapter adapter = new CustomAdapter( this ,res );
-        lv.setAdapter( adapter );
+    }
 
-
+    @Override
+    public void onClick(View view) {
 
     }
 }

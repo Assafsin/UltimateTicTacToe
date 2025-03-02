@@ -9,188 +9,79 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class DatabaseHelper extends SQLiteOpenHelper
-{
-    private static final String DATABASE_NAME = "memory_db.db";
+public class DatabaseHelper extends SQLiteOpenHelper {
+
+    private static final String DATABASE_NAME = "UserDB.db";
     private static final int DATABASE_VERSION = 1;
-
-    public static final String TABLE_NAME = "players";
-    public static final String UID = "_id";                 // primary Key, automatic ID
-    public static final String KEY_NAME = "name";           // name of the player
-    public static final String SCORE = "score";               // number of wins
-
-
-    private static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + KEY_NAME + " TEXT, " + SCORE + " INTEGER );";
-
-    private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS "+ TABLE_NAME;
+    private static final String TABLE_USERS = "users";
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_PASSWORD = "password";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // Create the table
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-        db.execSQL(SQL_CREATE_ENTRIES);
+        String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_USERNAME + " TEXT, "
+                + COLUMN_EMAIL + " TEXT, "
+                + COLUMN_PASSWORD + " TEXT" + ")";
+        db.execSQL(CREATE_USERS_TABLE);
     }
 
+    // Upgrade the database if needed
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        db.execSQL(SQL_DELETE_ENTRIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         onCreate(db);
     }
 
-    /**
-     * @param name
-     */
-    public void addData(String name)
-    {
+    // Registration: Insert a new user
+    public boolean registerUser(String username, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(KEY_NAME, name);
-        cv.put(SCORE, 0);
-        boolean inserted =  db.insert(TABLE_NAME, null, cv)>0;
 
+        // Check if username or email already exists
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_USERNAME + "=? OR " + COLUMN_EMAIL + "=?",
+                new String[]{username, email});
 
-    }
-
-    public void addData(String name, int score)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(KEY_NAME, name);
-        cv.put(SCORE, score);
-        boolean inserted =  db.insert(TABLE_NAME, null, cv)>0;
-
-    }
-
-    /**
-     * @param name
-     * @return
-     */
-    public boolean exist( String name)
-    {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c=db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + KEY_NAME +"= ? " , new String[]{name});
-
-        if(c.moveToFirst()) {// if moveToFirst() returns false - c is empty
-            c.close();
+        if (cursor.moveToFirst()) {
+            // User with the given username or email already exists.
+            cursor.close();
             db.close();
-            return true;
+            return false; // or handle the error as needed
         }
-        c.close();
-        return false;
-    }
 
-    /**
-     * @param name
-     * @return
-     */
-    public boolean addToPlayerList( String name,int cards)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor c=db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + KEY_NAME +"= ? " , new String[]{name});
-
-        /*  if the player exist in the database */
-        if(c!=null && c.moveToFirst()) {// if moveToFirst() returns false - c is empty
-            Log.d("in addToPlayerList", "exist");
-            String d = c.getString(1);
-            int score = c.getInt(2);
-            score+=cards;
-            ContentValues cv = new ContentValues();
-            cv.put(KEY_NAME, name);
-            cv.put(SCORE, score);
-            db.update(TABLE_NAME, cv, KEY_NAME+"= ? " , new String[]{name});
-            c.close();
-            db.close();
-            return true;
-        }
-        /* adding a new player to the database*/
-        else {
-            this.addData(name,cards);
-        }
-        c.close();
-        return false;
-    }
-
-
-    /**
-     * Getting all names
-     * returns arrayList of players
-     * */
-    public ArrayList<String> getAllNames(){
-        ArrayList<String> players = new ArrayList<String>();
-
-        // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME;
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast())  {
-            players.add(cursor.getString(1));
-            cursor.moveToNext();
-        }
-        // closing connection
         cursor.close();
-        return players;
+
+        // If not, insert new record
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, username);
+        values.put(COLUMN_EMAIL, email);
+        values.put(COLUMN_PASSWORD, password);
+
+        long result = db.insert(TABLE_USERS, null, values);
+        db.close();
+        return result != -1;
     }
 
-    /**
-     * @return
-     */
-    public ArrayList<Integer> getAllWins(){
-        ArrayList<Integer> arrayList = new ArrayList<Integer>();
-
-        // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME;
-
+    // Login: Check if user exists with given email and password
+    public boolean loginUserByUsername(String username, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast())  {
-            arrayList.add(cursor.getInt(2));
-            cursor.moveToNext();
-        }
-        // closing connection
-        cursor.close();
-        return arrayList;
-    }
-
-    public ArrayList<Player> getAllPlayers(){
-        ArrayList<Player> arrayList = new ArrayList<Player>();
-
-        // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME;
-        Player p;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast())  {
-            p = new Player(cursor.getString(1));
-            p.setScore(cursor.getInt(2));
-            arrayList.add(p);
-            cursor.moveToNext();
-        }
-        // closing connection
+        String query = "SELECT * FROM " + TABLE_USERS +
+                " WHERE " + COLUMN_USERNAME + "=? AND " + COLUMN_PASSWORD + "=?";
+        Cursor cursor = db.rawQuery(query, new String[]{username, password});
+        boolean result = cursor.moveToFirst();
         cursor.close();
         db.close();
-
-        return arrayList;
-    }
-
-    public void remove( String name) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, KEY_NAME + "= ? " , new String[]{name});
+        return result;
     }
 }
+
 
 

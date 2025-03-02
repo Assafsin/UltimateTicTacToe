@@ -16,7 +16,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imgBack"
+            android:id="@+id/btnBack"
             android:layout_width="117dp"
             android:layout_height="79dp"
             app:srcCompat="@android:drawable/ic_menu_revert" />

@@ -1,5 +1,6 @@
 package com.example.ultimatetictactoe;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +40,10 @@ public class LeaderBoard extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-
+        if (view.getId() == btnBack.getId()) {
+            Intent intent = new Intent();
+            intent = new Intent(LeaderBoard.this, StartActivity.class);
+            startActivity(intent);
+        }
     }
 }

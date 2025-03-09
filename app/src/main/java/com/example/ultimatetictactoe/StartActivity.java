@@ -139,9 +139,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     editor.putString("USERNAME", username);  // 'username' is a variable holding the user's name
                     editor.apply(); // or editor.commit();
 
-                    intent = new Intent(StartActivity.this, Player.class);
-
-
+                    intent = new Intent(StartActivity.this, MainActivity.class);
                     intent.putExtra("USERNAME", username);
 
 

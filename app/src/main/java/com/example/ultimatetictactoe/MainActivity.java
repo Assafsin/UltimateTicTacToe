@@ -1,11 +1,16 @@
 package com.example.ultimatetictactoe;
 
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +24,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ImageView[][] gameBoard;
     private ImageButton[][] gameButtons;
+
+    private Dialog dialog;
+    private EditText editdUsername, editDEmail, editDPassword;
+    private Button btnDlogin, reStart;
+    private TextView tvUserName, winnerView;
+
 
 
     @Override
@@ -65,8 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for (ImageButton iButton : buttonsArray) {
                     if (view.getId() == iButton.getId()) {
                         gManager.turn(column, row);
-                        // TODO: add won innerGrid animation
-                        //                   if (gManager.getIsWon())
+                        if (gManager.getGameEnded()) createWinnerDialog();
                     }
                     row++;
                 }
@@ -90,5 +100,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+    }
+
+
+    public void createWinnerDialog() {
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.winnerpopup);
+        dialog.setTitle("Registration");
+        dialog.setCancelable(true);
+
+
+        winnerView = (TextView) dialog.findViewById(R.id.winner);
+        if (gManager.endGame() == Piece.X)
+            winnerView.setText("Player X won!");
+        else
+            winnerView.setText("Player O won!");
+
+
+        reStart = (Button) dialog.findViewById(R.id.btnRestart);
+        reStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, MainActivity.class));
+            }
+        });
+        dialog.show();
     }
 }

@@ -62,7 +62,7 @@ public class GameManager {
         return gameBoard.getPiece(i / 3, j / 3, i % 3, j % 3);
     }
 
-    private Piece endGame() {
+    public Piece endGame() {
         if (gameBoard.playerWon(Piece.X)) return Piece.X;
         if (gameBoard.playerWon(Piece.O)) return Piece.O;
         return Piece.EMPTY;

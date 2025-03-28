@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Registration Section -->
+    <TextView
+        android:id = "@+id/winner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Player Won"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:paddingBottom="16dp" />
+
+
+    <Button
+        android:id="@+id/btnRestart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Restart Game"
+        android:layout_gravity="center"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="16dp"
+        android:padding="12dp" />
+
+</LinearLayout>

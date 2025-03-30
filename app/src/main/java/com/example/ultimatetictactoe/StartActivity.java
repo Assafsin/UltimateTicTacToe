@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -44,8 +42,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean music;
 
-    // starts background music if off stops it
-    private Switch switchMusic;
+
 
 // music player
 // connect to class musiceservice
@@ -54,7 +51,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     private Intent playIntent;
 
-    public static boolean isPlaying = true;
+    public static boolean isPlaying = false;
 
     // true if music is working else false
     private boolean musicBound;
@@ -99,9 +96,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         btnExit = (Button) findViewById(R.id.btnExit);
         btnExit.setOnClickListener(this);
 
-        //music
-        //switchMusic = (Switch) findViewById(R.id.switchMusic);
-        //switchMusic.setOnClickListener(this);
 
         musicService = new MusicService();
         musicBound = false;
@@ -111,6 +105,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     Context.BIND_AUTO_CREATE);
             startService(playIntent);
         }
+
+        musicService.pause();
 
     }
 
@@ -154,20 +150,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             musicService = null;
             finish();
         }
-
-        /*if (v.getId() == R.id.switchMusic)
-        {
-            if (switchMusic.isChecked()) {
-                musicService.pause();
-                switchMusic.setChecked(true);
-            }
-            else {
-                musicService.resume();
-                switchMusic.setChecked(false);
-            }
-            StartActivity.isPlaying = !StartActivity.isPlaying;
-        }*/
-
 
         if (v.getId() == btnScoreList.getId()) {
             startActivity(new Intent(this, LeaderBoard.class));

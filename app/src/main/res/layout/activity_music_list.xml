@@ -20,6 +20,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/btnback" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -29,6 +41,18 @@
                 android:text=" Choose Song From Phone"
                 android:textSize="40sp"
                 android:textStyle="normal|bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Switch
+                android:id="@+id/switchMusic"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:text="On/Off" />
         </TableRow>
 
         <TableRow

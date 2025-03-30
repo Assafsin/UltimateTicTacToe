@@ -1,7 +1,10 @@
 package com.example.ultimatetictactoe;
 
+import static com.example.ultimatetictactoe.StartActivity.musicService;
+
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,7 +13,9 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +25,11 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 
 
-public class MusicListActivity extends AppCompatActivity {
+public class MusicListActivity extends AppCompatActivity  implements View.OnClickListener {
+
+    // starts background music if off stops it
+    private Switch switchMusic;
+    private ImageView back;
 
     private ListView lvSongs;
     private ArrayList<Song> songList;
@@ -49,11 +58,7 @@ public class MusicListActivity extends AppCompatActivity {
         } else {
             //todo enter to the list
         }
-
-
         getSongs();
-
-
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, songsNames);
         lvSongs.setAdapter(adapter);
         lvSongs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -61,10 +66,16 @@ public class MusicListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // change playing song to the chosen song
-                StartActivity.musicService.setSong(i);
-                StartActivity.musicService.playSong();
+                musicService.setSong(i);
+                musicService.playSong();
             }
         });
+
+        switchMusic = (Switch) findViewById(R.id.switchMusic);
+        switchMusic.setOnClickListener(this);
+
+        back = (ImageView) findViewById(R.id.back);
+        back.setOnClickListener(this);
 
     }
 
@@ -97,7 +108,28 @@ public class MusicListActivity extends AppCompatActivity {
     {
         super.onResume();
         if(StartActivity.isPlaying)
-            StartActivity.musicService.resume();
+            musicService.resume();
 
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if (view.getId() == back.getId()) {
+            startActivity(new Intent(MusicListActivity.this, StartActivity.class));
+        }
+
+        if (view.getId() == R.id.switchMusic)
+        {
+            if (switchMusic.isChecked()) {
+                musicService.pause();
+                switchMusic.setChecked(true);
+            }
+            else {
+                musicService.resume();
+                switchMusic.setChecked(false);
+            }
+            StartActivity.isPlaying = !StartActivity.isPlaying;
+        }
     }
 }

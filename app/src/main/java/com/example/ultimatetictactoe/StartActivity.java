@@ -1,14 +1,18 @@
 package com.example.ultimatetictactoe;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -37,6 +41,26 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     private SharedPreferences sharedPreferences;
     private String savedUsername;
 
+
+    private boolean music;
+
+    // starts background music if off stops it
+    private Switch switchMusic;
+
+// music player
+// connect to class musiceservice
+
+    public static MusicService musicService;
+
+    private Intent playIntent;
+
+    public static boolean isPlaying = true;
+
+    // true if music is working else false
+    private boolean musicBound;
+
+    //boolean for the battery check
+    private static boolean isFirstTime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +99,37 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         btnExit = (Button) findViewById(R.id.btnExit);
         btnExit.setOnClickListener(this);
 
+        //music
+        //switchMusic = (Switch) findViewById(R.id.switchMusic);
+        //switchMusic.setOnClickListener(this);
+
+        musicService = new MusicService();
+        musicBound = false;
+        if (playIntent == null) {
+            playIntent = new Intent(this, MusicService.class);
+            bindService(playIntent, musicConnection,
+                    Context.BIND_AUTO_CREATE);
+            startService(playIntent);
+        }
+
     }
+
+    //conect to the service
+    private ServiceConnection musicConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
+            //get service
+            musicService = binder.getService();
+            // pass list
+            musicBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            musicBound = false;
+        }
+    };
 
     @Override
     public void onClick(View v) {
@@ -88,8 +142,35 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             createLoginDialog();
         }
 
+        if (v.getId() == R.id.btnMusic)
+        {
+            intent = new Intent(StartActivity.this, MusicListActivity.class);
+            startActivity(intent);
+        }
+
+        if (v.getId() == R.id.btnExit)
+        {
+            stopService(playIntent);
+            musicService = null;
+            finish();
+        }
+
+        /*if (v.getId() == R.id.switchMusic)
+        {
+            if (switchMusic.isChecked()) {
+                musicService.pause();
+                switchMusic.setChecked(true);
+            }
+            else {
+                musicService.resume();
+                switchMusic.setChecked(false);
+            }
+            StartActivity.isPlaying = !StartActivity.isPlaying;
+        }*/
+
+
         if (v.getId() == btnScoreList.getId()) {
-            intent = new Intent(this, LeaderBoard.class);            startActivity(intent);
+            startActivity(new Intent(this, LeaderBoard.class));
         }
 
         if (v.getId() == btnExit.getId()) {

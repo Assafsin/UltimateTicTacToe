@@ -67,12 +67,12 @@ public class MusicService extends Service implements
 
             Song song;
 
-            while (songs.moveToNext()) {
+            do {
                 long longSongID = songs.getLong(songID);
                 String currentTitle = songs.getString(songTitle);
                 song = new Song(longSongID, currentTitle);
                 valuesList.add(song);
-            }
+            } while (songs.moveToNext());
         }
     }
 
@@ -109,15 +109,22 @@ public class MusicService extends Service implements
     }
 
     public void playSong() {
-        // play song from the list
-        if (player != null) //אם נוצר כבר
-            player.reset();
+        // Ensure the list is not empty
+        if (valuesList.isEmpty()) {
+            Log.e("MusicService", "No songs found in the list!");
+            return;
+        }
 
+        // Reset the player if a song is already playing
+        if (player != null) {
+            player.reset();
+        }
+
+        // Get the song to play from the list
         Song songToPlay = valuesList.get(songPosn);
         long songId = songToPlay.getId();
 
-        Uri trackUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                songId);
+        Uri trackUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, songId);
         try {
             player.setDataSource(getApplicationContext(), trackUri);
         } catch (Exception e) {
@@ -125,16 +132,13 @@ public class MusicService extends Service implements
         }
         player.prepareAsync();
 
-        player.setOnPreparedListener((new MediaPlayer.OnPreparedListener() {
-            public void onPrepared(MediaPlayer mediaPlayer) {
-
-                mediaPlayer.setLooping(true);
-                mediaPlayer.start();
-            }
-        }));
+        player.setOnPreparedListener(mediaPlayer -> {
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+        });
         isStopped = false;
-
     }
+
 
     public void setList(ArrayList<Song> theSongs) {
         valuesList = theSongs;
@@ -182,6 +186,4 @@ public class MusicService extends Service implements
         // TODO Auto-generated method stub
         return false;
     }
-
-
 }

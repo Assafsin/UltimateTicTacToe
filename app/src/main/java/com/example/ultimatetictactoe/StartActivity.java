@@ -44,7 +44,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-    private boolean music;
+    private boolean music = false;
 
 
 
@@ -118,9 +118,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     Context.BIND_AUTO_CREATE);
             startService(playIntent);
         }
-
         musicService.pause();
-
     }
 
     //conect to the service
@@ -323,4 +321,5 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         unregisterBatteryReceiver();
         super.onDestroy();
     }
+
 }

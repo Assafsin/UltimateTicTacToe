@@ -5,6 +5,7 @@
 
     <!-- Music Service -->
     <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
     <uses-permission-sdk-23 android:name="android.permission.WAKE_LOCK" />
         <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE" />

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,6 +25,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     Intent intent;
 
+    Battery batteryReceiver;
+    public static boolean isFirstTime = true;
+
+
     // for login / register players card
     private Dialog dialog;
     private EditText editdUsername, editDEmail, editDPassword;
@@ -32,7 +37,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
 
     // **** SQLite database
-    public DatabaseHelper dbHelper;
+    public static DatabaseHelper dbHelper;
     private Button btnLogin,btnRegister, btnMusic, btnExit, btnScoreList;
 
     //SharedPreferences save user name in this phone
@@ -56,9 +61,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     // true if music is working else false
     private boolean musicBound;
 
-    //boolean for the battery check
-    private static boolean isFirstTime = true;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,14 +79,26 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
 
+        if (this.isFirstTime) {
+            batteryReceiver = new Battery();
+            registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+            this.isFirstTime=false;
+        }
+        else {
+            // Unregister the receiver to stop it from receiving broadcasts
+            unregisterReceiver(batteryReceiver);
+
+        }
+
+
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         if (this.savedUsername.equals("DefaultUser")) {
             tvUserName.setText("");
             this.btnLogin.setText("Login ");
         }
         else {
-            tvUserName.setText(" Wellcom " + this.savedUsername + "! ");
-            this.btnRegister.setText("Sign in");
+            tvUserName.setText(" Wellcome " + this.savedUsername + "! ");
+            this.btnRegister.setText("Sign up");
         }
 
         btnMusic = (Button) findViewById(R.id.btnMusic);
@@ -279,4 +293,39 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         dialog.show();
     }
+
+    private void unregisterBatteryReceiver() {
+        if (isFirstTime) {
+            try {
+                unregisterReceiver(batteryReceiver);
+            } catch (IllegalArgumentException e) {
+                // Receiver might have been already unregistered.
+                e.printStackTrace();
+                isFirstTime = false;
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Re-register if needed when the activity resumes
+        unregisterBatteryReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        // Unregister to stop receiving broadcasts when not needed
+        unregisterBatteryReceiver();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // As an extra precaution, ensure the receiver is unregistered
+        unregisterBatteryReceiver();
+        super.onDestroy();
+    }
+
+
 }

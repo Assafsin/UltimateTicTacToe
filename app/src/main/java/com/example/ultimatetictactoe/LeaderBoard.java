@@ -35,7 +35,7 @@ public class LeaderBoard extends AppCompatActivity implements View.OnClickListen
         lv = (ListView) findViewById(R.id.lvStati);
         btnBack = (ImageView)findViewById(R.id.btnBack);
         btnBack.setOnClickListener(this);
-        Resources res =getResources();
+        Resources res = getResources();
     }
 
     @Override

@@ -15,8 +15,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class LoadActivity extends AppCompatActivity {
 
 
-    final int TIME1=500;//להפןך את ה500 ל1 בשביל לקצר
-    final int TIME2=6000;//להפוך את ה6000 ל1 בשביל לקצר
+    private final int TIME1=500;//להפןך את ה500 ל1 בשביל לקצר
+    private final int TIME2=6000;//להפוך את ה6000 ל1 בשביל לקצר
     private ImageView t1, t2, t3;
 
     @Override
@@ -98,7 +98,7 @@ public class LoadActivity extends AppCompatActivity {
         }, 10*TIME1);
 
 
-        // moving to main activity
+        // moving to the start activity
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

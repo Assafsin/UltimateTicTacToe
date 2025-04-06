@@ -66,6 +66,8 @@ public class MusicListActivity extends AppCompatActivity implements View.OnClick
         switchMusic = findViewById(R.id.switchMusic);
         switchMusic.setOnClickListener(this);
 
+        if (musicService.isPlaying()) switchMusic.setChecked(true);
+
         back = findViewById(R.id.back);
         back.setOnClickListener(this);
 
@@ -117,17 +119,16 @@ public class MusicListActivity extends AppCompatActivity implements View.OnClick
         if (songs != null && songs.moveToFirst()) {
             int titleColumn = songs.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int idColumn = songs.getColumnIndex(MediaStore.Audio.Media._ID);
+                do {
+                    String currentTitle = songs.getString(titleColumn);
+                    long currentId = songs.getLong(idColumn);
 
-            do {
-                String currentTitle = songs.getString(titleColumn);
-                long currentId = songs.getLong(idColumn);
+                    songsNames.add(currentTitle);
+                    songList.add(new Song(currentId, currentTitle));
+                } while (songs.moveToNext());
 
-                songsNames.add(currentTitle);
-                songList.add(new Song(currentId, currentTitle));
-            } while (songs.moveToNext());
-
-            songs.close();
-            adapter.notifyDataSetChanged();
+                songs.close();
+                adapter.notifyDataSetChanged();
         }
     }
 
@@ -147,11 +148,11 @@ public class MusicListActivity extends AppCompatActivity implements View.OnClick
 
         if (view.getId() == R.id.switchMusic) {
             if (switchMusic.isChecked()) {
-                if (musicService != null) musicService.pause();
-                StartActivity.isPlaying = false;
-            } else {
                 if (musicService != null) musicService.resume();
                 StartActivity.isPlaying = true;
+            } else {
+                if (musicService != null) musicService.pause();
+                StartActivity.isPlaying = false;
             }
         }
     }

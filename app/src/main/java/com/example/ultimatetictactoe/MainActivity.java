@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ImageView[][] gameBoard;
     private ImageButton[][] gameButtons;
+    private Button musicBtn;
 
     private Dialog dialog;
     private EditText editdUsername, editDEmail, editDPassword;
@@ -44,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gameButtons = new ImageButton[3][3];
         gameBoard = new ImageView[9][9];
         gManager = new GameManager();
+
+        musicBtn = (Button) findViewById(R.id.btnMusic);
+        musicBtn.setOnClickListener(this);
 
         String str;
         int resID;
@@ -67,33 +71,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (!gManager.getGameEnded()) {
-            int column = 0;
-            int row = 0;
-            for (ImageButton[] buttonsArray : gameButtons) {
-                for (ImageButton iButton : buttonsArray) {
-                    if (view.getId() == iButton.getId()) {
-                        gManager.turn(column, row);
-                        if (gManager.getGameEnded()) createWinnerDialog();
+        if (view.getId() == musicBtn.getId())
+            startActivity(new Intent(MainActivity.this, MusicListActivity.class));
+        else{
+            if (!gManager.getGameEnded()) {
+                int column = 0;
+                int row = 0;
+                for (ImageButton[] buttonsArray : gameButtons) {
+                    for (ImageButton iButton : buttonsArray) {
+                        if (view.getId() == iButton.getId()) {
+                            gManager.turn(column, row);
+                            if (gManager.getGameEnded()) createWinnerDialog();
+                        }
+                        row++;
                     }
-                    row++;
+                    row = 0;
+                    column++;
                 }
-                row = 0;
-                column++;
-            }
 
-            Drawable icon;
-            for (int i = 0; i < gameBoard.length; i++) {
-                for (int j = 0; j < gameBoard[0].length; j++) {
-                    if (gManager.getPiece(i, j) == Piece.X) {
-                        icon = getResources().getDrawable(R.drawable.x, getTheme());
-                        gameBoard[i][j].setImageDrawable(icon);
-                    } else if (gManager.getPiece(i, j) == Piece.O) {
-                        icon = getResources().getDrawable(R.drawable.o, getTheme());
-                        gameBoard[i][j].setImageDrawable(icon);
-                    } else if (gManager.getPiece(i, j) == Piece.EMPTY) {
-                        icon = getResources().getDrawable(R.drawable.frm, getTheme());
-                        gameBoard[i][j].setImageDrawable(icon);
+                Drawable icon;
+                for (int i = 0; i < gameBoard.length; i++) {
+                    for (int j = 0; j < gameBoard[0].length; j++) {
+                        if (gManager.getPiece(i, j) == Piece.X) {
+                            icon = getResources().getDrawable(R.drawable.x, getTheme());
+                            gameBoard[i][j].setImageDrawable(icon);
+                        } else if (gManager.getPiece(i, j) == Piece.O) {
+                            icon = getResources().getDrawable(R.drawable.o, getTheme());
+                            gameBoard[i][j].setImageDrawable(icon);
+                        } else if (gManager.getPiece(i, j) == Piece.EMPTY) {
+                            icon = getResources().getDrawable(R.drawable.frm, getTheme());
+                            gameBoard[i][j].setImageDrawable(icon);
+                        }
                     }
                 }
             }

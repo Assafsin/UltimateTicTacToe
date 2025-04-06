@@ -66,13 +66,14 @@ public class MusicService extends Service implements
             int songID = songs.getColumnIndex(MediaStore.Audio.Media._ID);
 
             Song song;
-
-            do {
-                long longSongID = songs.getLong(songID);
-                String currentTitle = songs.getString(songTitle);
-                song = new Song(longSongID, currentTitle);
-                valuesList.add(song);
-            } while (songs.moveToNext());
+            if (songs.moveToFirst()) {
+                do {
+                    long longSongID = songs.getLong(songID);
+                    String currentTitle = songs.getString(songTitle);
+                    song = new Song(longSongID, currentTitle);
+                    valuesList.add(song);
+                } while (songs.moveToNext());
+            }
         }
     }
 

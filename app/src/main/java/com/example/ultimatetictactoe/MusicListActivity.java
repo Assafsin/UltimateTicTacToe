@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -119,13 +120,15 @@ public class MusicListActivity extends AppCompatActivity implements View.OnClick
         if (songs != null && songs.moveToFirst()) {
             int titleColumn = songs.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int idColumn = songs.getColumnIndex(MediaStore.Audio.Media._ID);
-                do {
-                    String currentTitle = songs.getString(titleColumn);
-                    long currentId = songs.getLong(idColumn);
+                if (songs.moveToFirst()) {
+                    do {
+                        String currentTitle = songs.getString(titleColumn);
+                        long currentId = songs.getLong(idColumn);
 
-                    songsNames.add(currentTitle);
-                    songList.add(new Song(currentId, currentTitle));
-                } while (songs.moveToNext());
+                        songsNames.add(currentTitle);
+                        songList.add(new Song(currentId, currentTitle));
+                    } while (songs.moveToNext());
+                }
 
                 songs.close();
                 adapter.notifyDataSetChanged();

@@ -11,7 +11,6 @@ import android.os.Handler;
 public class Battery extends BroadcastReceiver {
 
     private int batteryThreshold;
-    public static boolean alreadyChecked = false;
 
     // Default constructor with a default threshold of 50%
     public Battery() {
@@ -25,7 +24,6 @@ public class Battery extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!alreadyChecked) {
             // Get battery level from the intent
             int level = intent.getIntExtra("level", 0);
 
@@ -36,7 +34,6 @@ public class Battery extends BroadcastReceiver {
                         .setIcon(android.R.drawable.ic_lock_idle_low_battery)
                         .show());
             }
-        }
     }
 
     public void timerDelayRemoveDialog(long time, final Dialog d) {
@@ -46,7 +43,6 @@ public class Battery extends BroadcastReceiver {
                 d.dismiss();
             }
         }, time);
-        alreadyChecked = true;
     }
 }
 

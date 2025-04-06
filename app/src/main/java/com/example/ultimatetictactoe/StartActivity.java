@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
 
-
     //toolbar
     androidx.appcompat.widget.Toolbar toolbar;
 
@@ -27,7 +26,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     Battery batteryReceiver;
     public static boolean isFirstTime = true;
-
 
     // for login / register players card
     private Dialog dialog;
@@ -43,6 +41,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     //SharedPreferences save user name in this phone
     private SharedPreferences sharedPreferences;
     private String savedUsername;
+
 
 
     private boolean music;
@@ -216,10 +215,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     editor.putString("USERNAME", username);  // 'username' is a variable holding the user's name
                     editor.apply(); // or editor.commit();
 
-                    intent = new Intent(StartActivity.this, MainActivity.class);
+                    intent = new Intent(StartActivity.this, AddPlayers.class);
                     intent.putExtra("USERNAME", username);
-
-
                     startActivity(intent);
 
                     // Optionally, navigate to LoginActivity here.
@@ -326,6 +323,4 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         unregisterBatteryReceiver();
         super.onDestroy();
     }
-
-
 }

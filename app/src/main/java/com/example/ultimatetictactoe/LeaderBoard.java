@@ -13,6 +13,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+
 public class LeaderBoard extends AppCompatActivity implements View.OnClickListener {
 
     // list view of scores
@@ -25,18 +27,20 @@ public class LeaderBoard extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_leader_board);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-
-        lv = (ListView) findViewById(R.id.lvStati);
-        btnBack = (ImageView)findViewById(R.id.btnBack);
+        lv = findViewById(R.id.lvStati);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(this);
-        Resources res = getResources();
+
+        // Load leaderboard
+        DatabaseHelper db = new DatabaseHelper(this);
+        ArrayList<Player> players = db.getAllPlayers();
+
+        // Custom adapter
+        PlayerAdapter adapter = new PlayerAdapter(this, players);
+        lv.setAdapter(adapter);
     }
+
 
     @Override
     public void onClick(View view) {

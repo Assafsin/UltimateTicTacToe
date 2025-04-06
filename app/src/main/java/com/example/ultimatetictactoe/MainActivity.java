@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(MainActivity.this, MusicListActivity.class));
         else{
             if (!gManager.getGameEnded()) {
+                StartActivity.dbHelper.addToPlayerList("hello");
                 int column = 0;
                 int row = 0;
                 for (ImageButton[] buttonsArray : gameButtons) {

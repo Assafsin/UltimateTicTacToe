@@ -202,7 +202,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 }
 
 
-                boolean isRegistered = dbHelper.loginUserByUsername(username, password);
+                boolean isRegistered = dbHelper.loginUser(username, password);
                 tvDMessage.setVisibility(View.VISIBLE);
                 if (isRegistered) {
 
@@ -220,8 +220,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     // Optionally, navigate to LoginActivity here.
                 } else {
                     tvDMessage.setText("Login failed please sign in first");
-
-
                 }
 
             }

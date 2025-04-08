@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     GameManager gManager;
 
+    String userX;
+    String userO;
+
     private ImageView[][] gameBoard;
     private ImageButton[][] gameButtons;
     private Button musicBtn;
@@ -45,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gameButtons = new ImageButton[3][3];
         gameBoard = new ImageView[9][9];
         gManager = new GameManager();
+
+        userO = getIntent().getStringExtra("DATA1");
+        userX = getIntent().getStringExtra("DATA2");
 
         musicBtn = (Button) findViewById(R.id.btnMusic);
         musicBtn.setOnClickListener(this);
@@ -75,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(MainActivity.this, MusicListActivity.class));
         else{
             if (!gManager.getGameEnded()) {
-                StartActivity.dbHelper.addToPlayerList("hello");
                 int column = 0;
                 int row = 0;
                 for (ImageButton[] buttonsArray : gameButtons) {
@@ -118,17 +123,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         winnerView = (TextView) dialog.findViewById(R.id.winner);
-        if (gManager.endGame() == Piece.X)
+        if (gManager.endGame() == Piece.X) {
             winnerView.setText("Player X won!");
-        else
+            StartActivity.dbHelper.addToPlayerList(userX);
+        }
+        else {
             winnerView.setText("Player O won!");
-
-
+            StartActivity.dbHelper.addToPlayerList(userO);
+        }
         reStart = (Button) dialog.findViewById(R.id.btnRestart);
         reStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.putExtra("DATA1", userO);
+                intent.putExtra("DATA2", userX);
+                startActivity(intent);
             }
         });
         dialog.show();

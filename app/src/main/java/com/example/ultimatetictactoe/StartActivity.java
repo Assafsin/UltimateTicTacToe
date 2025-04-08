@@ -85,8 +85,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         }
         else {
             // Unregister the receiver to stop it from receiving broadcasts
-            unregisterReceiver(batteryReceiver);
-
+            if(batteryReceiver != null) unregisterReceiver(batteryReceiver);
         }
 
 

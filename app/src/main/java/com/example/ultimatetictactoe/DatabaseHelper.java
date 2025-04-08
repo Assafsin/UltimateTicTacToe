@@ -102,53 +102,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public boolean addToPlayerList( String name)
-    {
+    public boolean addToPlayerList(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor c=db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + USERNAME +"= ? " , new String[]{name});
+        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + USERNAME + " = ?", new String[]{name});
 
-        /*  if the player exist in the database */
-        if(c!=null && c.moveToFirst()) {// if moveToFirst() returns false - c is empty
-            Log.d("in addToPlayerList", "exist");
-            int u_id =c.getInt(0);
-            String u_name = c.getString(1);
-            int u_score = c.getInt(2);
-            u_score++;
+        if (c != null && c.moveToFirst()) {
+            // Player exists – update score
+            int currentScore = c.getInt(c.getColumnIndexOrThrow(SCORE));
+            currentScore++;
+
             ContentValues cv = new ContentValues();
-            cv.put(USER_ID,u_id);
-            cv.put(USERNAME, u_name);
-            cv.put(SCORE, u_score);
-            db.update(TABLE_NAME, cv, USERNAME+"= ? " , new String[]{name});
+            cv.put(SCORE, currentScore);
+
+            db.update(TABLE_NAME, cv, USERNAME + " = ?", new String[]{name});
             c.close();
             db.close();
             return true;
+        } else {
+            // Player doesn't exist – add with score 1
+            addData(name, 1);
+            if (c != null) c.close();
+            db.close();
+            return false;
         }
-        /* adding a new player to the database*/
-        else {
-            this.addData(name,1);
-        }
-        c.close();
-        return false;
     }
 
-    public ArrayList<Player> getAllPlayers(){
-        ArrayList<Player> arrayList = new ArrayList<Player>();
 
-        // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_NAME;
-        Player p;
+    public ArrayList<Player> getAllPlayers(){
+        ArrayList<Player> arrayList = new ArrayList<>();
+
+        // Order by score DESC to show highest scores at the top
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + SCORE + " DESC";
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast())  {
-            p = new Player(cursor.getString(1));
-            p.setScore(cursor.getInt(2));
-            arrayList.add(p);
-            cursor.moveToNext();
+        if (cursor.moveToFirst()) {
+            do {
+                Player p = new Player(cursor.getString(1)); // username
+                p.setScore(cursor.getInt(3)); // score
+                arrayList.add(p);
+            } while (cursor.moveToNext());
         }
-        // closing connection
+
         cursor.close();
         db.close();
 

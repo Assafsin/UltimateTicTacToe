@@ -19,8 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
 
-    //toolbar
-    androidx.appcompat.widget.Toolbar toolbar;
 
     Intent intent;
 
@@ -158,7 +156,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         {
             stopService(playIntent);
             musicService = null;
-            finish();
+            finishAffinity();
         }
 
         if (v.getId() == btnScoreList.getId()) {

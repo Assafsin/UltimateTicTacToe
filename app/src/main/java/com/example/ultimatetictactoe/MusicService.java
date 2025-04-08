@@ -187,4 +187,18 @@ public class MusicService extends Service implements
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("MusicService", "Service destroyed");
+
+        if (player != null) {
+            if (player.isPlaying()) {
+                player.stop();
+            }
+            player.release();
+            player = null;
+        }
+    }
 }

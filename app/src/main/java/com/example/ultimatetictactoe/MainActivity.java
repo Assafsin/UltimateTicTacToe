@@ -127,9 +127,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             winnerView.setText("Player X won!");
             StartActivity.dbHelper.addToPlayerList(userX);
         }
-        else {
+        else if (gManager.endGame() == Piece.O) {
             winnerView.setText("Player O won!");
             StartActivity.dbHelper.addToPlayerList(userO);
+        }
+        else {
+            winnerView.setText("It's a TIE!");
         }
         reStart = (Button) dialog.findViewById(R.id.btnRestart);
         reStart.setOnClickListener(new View.OnClickListener() {

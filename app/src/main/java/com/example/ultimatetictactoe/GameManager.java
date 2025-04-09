@@ -44,6 +44,10 @@ public class GameManager {
         }
         currInnerGridI = i;
         currInnerGridJ = j;
+        if(gameBoard.isFull(currInnerGridI, currInnerGridJ)) {
+            if(gameBoard.isTie()) gameEnded = true;
+            canChoose = true;
+        }
     }
 
     private void matchWon(Piece player) {
@@ -52,7 +56,6 @@ public class GameManager {
             gameEnded = true;
         }
     }
-
 
     public boolean getGameEnded() {
         return gameEnded;
@@ -67,4 +70,5 @@ public class GameManager {
         if (gameBoard.playerWon(Piece.O)) return Piece.O;
         return Piece.EMPTY;
     }
+
 }

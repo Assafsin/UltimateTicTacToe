@@ -28,7 +28,6 @@ public class GameBoard {
 
     public void placePiece (int miniBoardI, int miniBoardJ, int innerI, int innerJ, Piece player) {
         mainBoard[miniBoardI][miniBoardJ].placePiece(innerI, innerJ, player);
-
     }
 
     //checks if a given player has won overall in the match
@@ -53,5 +52,20 @@ public class GameBoard {
         return false;
     }
 
+    public boolean isFull (int miniBoardI, int miniBoardJ) {
+        if (mainBoard[miniBoardI][miniBoardJ].isFull()) return true;
+        return false;
+    }
 
+    public boolean isTie() {
+        for(InnerBoard[] innerArray : mainBoard) {
+            for (InnerBoard board : innerArray) {
+                if(!board.isFull()) return false;
+            }
+        }
+        return true;
+    }
+    public void initInnerBoard (int miniBoardI, int miniBoardJ) {
+        mainBoard[miniBoardI][miniBoardJ].resetInnerBoard();
+    }
 }

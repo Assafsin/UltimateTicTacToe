@@ -60,7 +60,7 @@ public class GameBoard {
     public boolean isTie() {
         for(InnerBoard[] innerArray : mainBoard) {
             for (InnerBoard board : innerArray) {
-                if(!board.isFull()) return false;
+                if(!board.isFull() && !board.isWon(Piece.O) && !board.isWon(Piece.X)) return false;
             }
         }
         return true;

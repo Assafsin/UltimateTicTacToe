@@ -30,8 +30,9 @@ public class GameManager {
                     gameBoard.wonInnerBoard(currInnerGridI, currInnerGridJ, currTurn);
                     isWon[currInnerGridI][currInnerGridJ] = true;
                     if(isWon[i][j]) canChoose= true;
-                    //check if the match was won and if it was, stops the match and gives a messages that tells who won
-                    matchWon(currTurn);
+                    if (gameBoard.playerWon(currTurn) || gameBoard.isTie()) {
+                        gameEnded = true;
+                    }
                 }
                 if (currTurn == Piece.X) currTurn = Piece.O;
                 else if (currTurn == Piece.O) currTurn = Piece.X;
@@ -47,13 +48,6 @@ public class GameManager {
         if(gameBoard.isFull(currInnerGridI, currInnerGridJ)) {
             if(gameBoard.isTie()) gameEnded = true;
             canChoose = true;
-        }
-    }
-
-    private void matchWon(Piece player) {
-        if (gameBoard.playerWon(player)) {
-            System.out.println("player " + player + " won, congratulations");
-            gameEnded = true;
         }
     }
 

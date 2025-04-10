@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void createWinnerDialog() {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.winnerpopup);
-        dialog.setTitle("Registration");
+        dialog.setTitle("MATCH ENDED");
         dialog.setCancelable(true);
 
 

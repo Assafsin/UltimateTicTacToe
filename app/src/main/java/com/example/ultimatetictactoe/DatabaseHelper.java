@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Table: users
     private static final String TABLE_NAME = "users";
-    private static final String USER_ID = "userid";
+
     private static final String USERNAME = "username";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
@@ -51,7 +51,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // USER METHODS
     public boolean registerUser(String username, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE username=? OR email=?", new String[]{username, email});
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME +
+                " WHERE username=? OR email=?", new String[]{username, email});
 
         if (cursor.moveToFirst()) {
             cursor.close();
@@ -72,7 +73,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean loginUser(String username, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE username=? AND password=?", new String[]{username, password});
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME
+                + " WHERE username=? AND password=?", new String[]{username, password});
         boolean result = cursor.moveToFirst();
         cursor.close();
         return result;
@@ -85,26 +87,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cv.put(USERNAME, name);
         cv.put(SCORE, score);
-        boolean inserted =  db.insert(TABLE_NAME, null, cv)>0;
-
-    }
-    public boolean exist( String name)
-    {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c=db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + USERNAME +"= ? " , new String[]{name});
-
-        if(c.moveToFirst()) {// if moveToFirst() returns false - c is empty
-            c.close();
-            db.close();
-            return true;
-        }
-        c.close();
-        return false;
     }
 
     public boolean addToPlayerList(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + USERNAME + " = ?", new String[]{name});
+        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME
+                + " WHERE " + USERNAME + " = ?", new String[]{name});
 
         if (c != null && c.moveToFirst()) {
             // Player exists – update score
@@ -130,10 +118,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Player> getAllPlayers(){
         ArrayList<Player> arrayList = new ArrayList<>();
-
         // Order by score DESC to show highest scores at the top
         String selectQuery = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + SCORE + " DESC";
-
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -151,7 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return arrayList;
     }
 
-    public void remove( String name) {
+    public void remove(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, USERNAME + "= ? " , new String[]{name});
     }

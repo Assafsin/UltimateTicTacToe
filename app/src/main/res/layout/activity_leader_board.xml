@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffdbbb"
+    android:background="#29bdc1"
     android:layoutDirection="ltr"
     android:orientation="vertical"
     tools:context=".LeaderBoard">
@@ -19,7 +19,7 @@
             android:id="@+id/btnBack"
             android:layout_width="117dp"
             android:layout_height="79dp"
-            app:srcCompat="@android:drawable/ic_menu_revert" />
+            app:srcCompat="@drawable/btnback" />
 
         <TextView
             android:layout_width="244dp"
@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="50dp"
             android:layout_weight="0"
-            android:fontFamily="casual"
+            android:fontFamily="cursive"
             android:gravity="center_horizontal"
             android:text=" Leader Board"
             android:textSize="30sp"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_weight="0"
-            android:fontFamily="casual"
+            android:fontFamily="cursive"
             android:gravity="center_horizontal"
             android:text="  Name        Score"
             android:textColor="#aa5533"

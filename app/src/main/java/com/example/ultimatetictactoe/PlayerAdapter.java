@@ -24,7 +24,8 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
     @NonNull
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_2, parent, false);
+            convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_2,
+                    parent, false);
         }
 
         Player player = players.get(position);

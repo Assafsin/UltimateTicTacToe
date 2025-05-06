@@ -1,10 +1,16 @@
 package com.example.ultimatetictactoe;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +18,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class LoadActivity extends AppCompatActivity {
+public class LoadActivity extends AppCompatActivity implements SensorEventListener {
+
+    //shake sensor
+    private SensorManager sensorManager;
+    //detect acceleration
+    private Sensor accelerometer;
+
+    // parameters to recognize a shake
+    private static final float SHAKE_THRESHOLD = 1.0003431f;
+    private static final int SHAKE_WAIT_TIME_MS = 500;
+
+    private long lastShakeTime = 0;
+
 
 
     private final int TIME1=500;//להפןך את ה500 ל1 בשביל לקצר
@@ -29,6 +47,12 @@ public class LoadActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        //sensors
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager != null) {
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        }
 
 
         t1 = (ImageView) findViewById(R.id.img1);
@@ -107,5 +131,58 @@ public class LoadActivity extends AppCompatActivity {
                 startActivity(i);
             }
         }, TIME2);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (accelerometer != null) {
+            sensorManager.registerListener((SensorEventListener) this,
+                    accelerometer, SensorManager.SENSOR_DELAY_UI);
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
+
+        // Normalize the acceleration values to get g-force
+        float gX = x / SensorManager.GRAVITY_EARTH;
+        float gY = y / SensorManager.GRAVITY_EARTH;
+        float gZ = z / SensorManager.GRAVITY_EARTH;
+
+        // Calculate the g-force
+        float gForce = (float) Math.sqrt(gX * gX + gY * gY + gZ * gZ);
+
+        // Debug output to Logcat
+        android.util.Log.d("SHAKE", "gForce: " + gForce);
+
+        if (gForce > SHAKE_THRESHOLD) {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastShakeTime > SHAKE_WAIT_TIME_MS) {
+                lastShakeTime = currentTime;
+                onShakeDetected();
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        //Not needed but you are still required to implement it
+    }
+
+    private void onShakeDetected() {
+        Toast.makeText(this, "Shake detected!", Toast.LENGTH_SHORT).show();
+        System.out.println("SHAKED");
+        Intent i = new Intent(getApplicationContext(),StartActivity.class);
+        finish();
+        startActivity(i);
     }
 }

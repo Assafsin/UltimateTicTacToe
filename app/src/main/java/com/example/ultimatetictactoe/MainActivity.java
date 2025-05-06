@@ -1,16 +1,19 @@
 package com.example.ultimatetictactoe;
 
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,12 +30,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ImageView[][] gameBoard;
     private ImageButton[][] gameButtons;
-    private Button musicBtn;
+    private Button musicBtn, backBtn;
 
     private Dialog dialog;
-    private EditText editdUsername, editDEmail, editDPassword;
-    private Button btnDlogin, reStart;
-    private TextView tvUserName, winnerView;
+    private Button reStart;
+    private TextView winnerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         musicBtn = (Button) findViewById(R.id.btnMusic);
         musicBtn.setOnClickListener(this);
+
+        backBtn = (Button) findViewById(R.id.btnBack);
+        backBtn.setOnClickListener(this);
 
         String str;
         int resID;
@@ -79,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view.getId() == musicBtn.getId())
             startActivity(new Intent(MainActivity.this, MusicListActivity.class));
+        if (view.getId() == backBtn.getId()) {
+            finish();
+        }
         else{
             if (!gManager.getGameEnded()) {
                 int column = 0;
@@ -114,36 +122,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     public void createWinnerDialog() {
-        dialog = new Dialog(this);
-        dialog.setContentView(R.layout.winnerpopup);
-        dialog.setTitle("MATCH ENDED");
-        dialog.setCancelable(true);
+        // Confirm dbHelper is initialized before use
+        if (StartActivity.dbHelper == null) {
+            Toast.makeText(this, "Database not initialized!", Toast.LENGTH_LONG).show();
+            return; // Prevent crash
+        }
 
+        // Inflate your custom layout
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.winnerpopup, null);
 
-        winnerView = (TextView) dialog.findViewById(R.id.winner);
-        if (gManager.endGame() == Piece.X) {
+        // Find views inside the custom layout
+        TextView winnerView = dialogView.findViewById(R.id.winner);
+        Button reStart = dialogView.findViewById(R.id.btnRestart);
+
+        // Determine and display the winner
+        Piece winner = gManager.endGame();
+        if (winner == Piece.X) {
             winnerView.setText("Player X won!");
             StartActivity.dbHelper.addToPlayerList(userX);
-        }
-        else if (gManager.endGame() == Piece.O) {
+        } else if (winner == Piece.O) {
             winnerView.setText("Player O won!");
             StartActivity.dbHelper.addToPlayerList(userO);
-        }
-        else {
+        } else {
             winnerView.setText("It's a TIE!");
         }
-        reStart = (Button) dialog.findViewById(R.id.btnRestart);
+
+        // Build the AlertDialog with the custom layout
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
+        builder.setCancelable(false); // Optional: prevent back press or outside tap from dismissing
+        AlertDialog alertDialog = builder.create();
+
+        // Restart button logic
         reStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                alertDialog.dismiss();
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 intent.putExtra("DATA1", userO);
                 intent.putExtra("DATA2", userX);
                 startActivity(intent);
+                finish(); // Close current activity to avoid stack buildup
             }
         });
-        dialog.show();
+
+        alertDialog.show(); // Show the dialog
     }
 }

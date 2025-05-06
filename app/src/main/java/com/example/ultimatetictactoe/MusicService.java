@@ -25,7 +25,6 @@ public class MusicService extends Service implements
     private int positionPausedInSong; // position in the pused song
     private final IBinder musicBind = new MusicBinder();
     private boolean isStopped; //state of the player
-    private Intent playIntent;
     @Override
     public void onCreate() {
         //create music Service
@@ -50,12 +49,6 @@ public class MusicService extends Service implements
 
     }
 
-    public void pauseMusic() {
-        player.pause();
-        //stopService(new Intent(this));
-        isStopped = true;
-        positionPausedInSong = player.getCurrentPosition();
-    }
     public void getSongs() {
         //enter to list of songs from phone storege
         ContentResolver cr = getContentResolver();       //--allows access to the the phone
@@ -77,11 +70,6 @@ public class MusicService extends Service implements
         }
     }
 
-
-    public void setSongPosn(int pos) {
-        this.songPosn = pos;
-    }
-
     @Override
     public IBinder onBind(Intent intent) {
         return musicBind;
@@ -90,15 +78,6 @@ public class MusicService extends Service implements
     @Override
     public boolean onUnbind(Intent intent) {
         return false;
-    }
-
-    public static void stopPlayMusic() { //stop the music
-        player.stop();
-        player.release();
-    }
-
-    public ArrayList<Song> getValuesList() {
-        return this.valuesList;
     }
 
     public void initMusicPlayer() {

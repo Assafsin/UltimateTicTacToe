@@ -29,9 +29,7 @@ public class AddPlayers extends AppCompatActivity implements View.OnClickListene
 
     private EditText edPlayer1, edPlayer2;//
     private ImageView imgContact1, imgContact2, imgBack, imgStart;//
-    private String firstname, name2, str;//
-    private int resId;//
-    private boolean found;//
+    private String firstname, name2;//
 
     private int playerNum;
     private Intent intent;
@@ -68,9 +66,6 @@ public class AddPlayers extends AppCompatActivity implements View.OnClickListene
         if (in != null && in.getExtras() != null) {
             Bundle xtraxs = in.getExtras();
             firstname = xtraxs.getString("USERNAME");
-
-
-
         }
         edPlayer1.setText(firstname);
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -98,7 +93,8 @@ public class AddPlayers extends AppCompatActivity implements View.OnClickListene
                             try {
                                 Uri uri = intent.getData();
 
-                                cursor = getContentResolver().query(uri, null, null, null, null);
+                                cursor = getContentResolver().query(uri, null,
+                                        null, null, null);
                                 cursor.moveToFirst();
 
 
@@ -140,8 +136,7 @@ public class AddPlayers extends AppCompatActivity implements View.OnClickListene
 
             contentLauncher.launch(contactPickerIntent);
         } else if (v.getId() == imgBack.getId()) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            finish();
         } else if (v.getId() == imgStart.getId()) {
             firstname = edPlayer1.getText().toString().trim();
             name2 = edPlayer2.getText().toString().trim();
@@ -149,7 +144,7 @@ public class AddPlayers extends AppCompatActivity implements View.OnClickListene
                     firstname.equals(name2)) {
                 new AlertDialog.Builder(this)
                         .setTitle(" Error!")
-                        .setMessage(" Users names not ok")
+                        .setMessage("Users names must be added and different")
                         .setNeutralButton(" ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -161,7 +156,7 @@ public class AddPlayers extends AppCompatActivity implements View.OnClickListene
 
             } else {
 
-                textToSpeech.speak(" Enjoy and Good Luck" + firstname + "and" + name2,
+                textToSpeech.speak(" Enjoy and Good Luck",
                         TextToSpeech.QUEUE_FLUSH, null);
 
                 intent = new Intent(this, MainActivity.class);

@@ -184,9 +184,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         btnDlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String username = editdUsername.getText().toString().trim();
-
                 String password = editDPassword.getText().toString().trim();
 
 
@@ -205,7 +203,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
                     tvDMessage.setText("Login successful");
                     // Save the username in SharedPreferences
-                    SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs",
+                            Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("USERNAME", username);  // 'username' is a variable holding the user's name
                     editor.apply(); // or editor.commit();
@@ -228,14 +227,11 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     public void createRegistrationDialog() {
         dialog = new Dialog(this);
-        dialog.setContentView(R.layout.registratiorpopup);
+        dialog.setContentView(R.layout.registrationpopup);
         dialog.setTitle("Registration");
         dialog.setCancelable(true);
-
-
         tvDMessage = (TextView) dialog.findViewById(R.id.tvMessage);
         tvDMessage.setVisibility(View.INVISIBLE);
-
         editdUsername = (EditText) dialog.findViewById(R.id.editUsername);
         editDPassword = (EditText) dialog.findViewById(R.id.editPassword);
         editDEmail = (EditText) dialog.findViewById(R.id.editEmail);

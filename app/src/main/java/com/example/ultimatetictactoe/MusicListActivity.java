@@ -49,7 +49,8 @@ public class MusicListActivity extends AppCompatActivity implements View.OnClick
         songList = new ArrayList<>();
         lvSongs = findViewById(R.id.lvSongs);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, songsNames);
+        adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, songsNames);
         lvSongs.setAdapter(adapter);
 
         lvSongs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,7 +60,8 @@ public class MusicListActivity extends AppCompatActivity implements View.OnClick
                     musicService.setSong(i);
                     musicService.playSong();
                 } else {
-                    Toast.makeText(MusicListActivity.this, "Music service not available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MusicListActivity.this,
+                            "Music service not available", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -78,7 +80,8 @@ public class MusicListActivity extends AppCompatActivity implements View.OnClick
     private void checkAndRequestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // Android 13+ uses READ_MEDIA_AUDIO
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO)
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_MEDIA_AUDIO)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_MEDIA_AUDIO},
@@ -107,7 +110,8 @@ public class MusicListActivity extends AppCompatActivity implements View.OnClick
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getSongs();
             } else {
-                Toast.makeText(this, "Permission denied to read media", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Permission denied to read media",
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -115,7 +119,8 @@ public class MusicListActivity extends AppCompatActivity implements View.OnClick
     private void getSongs() {
         ContentResolver cr = getContentResolver();
         Uri songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor songs = cr.query(songUri, null, null, null, null);
+        Cursor songs = cr.query(songUri, null, null,
+                null, null);
 
         if (songs != null && songs.moveToFirst()) {
             int titleColumn = songs.getColumnIndex(MediaStore.Audio.Media.TITLE);

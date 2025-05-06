@@ -9,10 +9,6 @@ public class Player {
         this.score = 0 ;
     }
 
-    public void won () {
-        score++;
-    }
-
     public void setScore (int score) {
         this.score = score;
     }
